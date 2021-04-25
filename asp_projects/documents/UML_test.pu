@@ -1,7 +1,3 @@
-### ユースケース図
-食事にいったときのお客の振る舞い
-
----
 ```uml
 @startuml
 left to right direction
