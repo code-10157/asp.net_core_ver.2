@@ -2,6 +2,7 @@
 食事にいったときのお客の振る舞い
 
 ---
+```uml
 @startuml
 left to right direction
 actor "お客" as fc
@@ -16,3 +17,4 @@ fc --> UC2
 fc --> UC3
 fc --> UC4
 @enduml
+```
