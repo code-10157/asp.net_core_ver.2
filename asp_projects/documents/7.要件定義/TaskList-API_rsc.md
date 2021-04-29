@@ -23,7 +23,7 @@
 ### 業務フロー
 
 ▼ ユースケース図
-[^1]: 「---」はボタン押下で遷移する。「白矢印」はユースケースのis-a関係を表すというテイで。
+
 ``` plantuml
 @startuml
 left to right direction
