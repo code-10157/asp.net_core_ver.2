@@ -5,22 +5,43 @@
 ---
 ### 画面一覧
 - <details><summary>ホーム画面</summary>初期画面</details>
-- <details><summary>プロジェクト一覧画面</summary>案件の管理をする</details>
-
-  - 新規追加画面
-  - 削除画面
-  - 編集画面
-  - 詳細画面
-- <details><summary>タスク一覧画面</summary>案件ごとの作業内容を管理をする</details>     
-
-  - 新規追加画面
-  - 削除画面
-  - 編集画面
-  - 詳細画面
+- <details>
+    <summary>プロジェクト一覧画面</summary>
+      案件の管理をする
+    <details open>
+      <summary>独自画面</summary>
+        &emsp;&nbsp;新規追加画面&nbsp;<br>
+        &emsp;&nbsp;削除画面<br>
+        &emsp;&nbsp;編集画面<br>
+        &emsp;&nbsp;詳細画面
+    </details>
+  </details>
+- <details>
+    <summary>タスク一覧画面</summary>
+      案件ごとの作業内容を管理をする
+    <details open>
+      <summary>独自画面</summary>
+        &emsp;&nbsp;新規追加画面&nbsp;<br>
+        &emsp;&nbsp;削除画面<br>
+        &emsp;&nbsp;編集画面<br>
+        &emsp;&nbsp;詳細画面
+    </details>
+  </details>     
 - <details><summary>その他画面</summary>未実装。現状は作業の集計機能を有する</details>
 
 ---
 ### 業務フロー
+
+<details>
+  <summary>画面遷移図</summary>
+
+  ``` plantuml
+  @startuml
+  state s4 #aliceblue;line:skyblue;line.bold;text:blue : s4 description
+  @enduml
+  ```
+</details>
+
 <details>
   <summary>ユースケース図</summary>
 
@@ -49,44 +70,45 @@
   ```
 </details>
 
-<details><summary>アクテビティ図</summary>
+<details>
+  <summary>アクテビティ図</summary>
 
-``` plantuml
-@startuml
+  ``` plantuml
+  @startuml
 
-start
-:ClickServlet.handleRequest();
-:new page;
-if (Page.onSecurityCheck) then (true)
-  :Page.onInit();
-  if (isForward?) then (no)
-    :Process controls;
-    if (continue processing?) then (no)
-      stop
+  start
+  :ClickServlet.handleRequest();
+  :new page;
+  if (Page.onSecurityCheck) then (true)
+    :Page.onInit();
+    if (isForward?) then (no)
+      :Process controls;
+      if (continue processing?) then (no)
+        stop
+      endif
+
+      if (isPost?) then (yes)
+        :Page.onPost();
+      else (no)
+        :Page.onGet();
+      endif
+      :Page.onRender();
     endif
+  else (false)
+  endif
 
-    if (isPost?) then (yes)
-      :Page.onPost();
+  if (do redirect?) then (yes)
+    :redirect process;
+  else
+    if (do forward?) then (yes)
+      :Forward request;
     else (no)
-      :Page.onGet();
+      :Render page template;
     endif
-    :Page.onRender();
   endif
-else (false)
-endif
 
-if (do redirect?) then (yes)
-  :redirect process;
-else
-  if (do forward?) then (yes)
-    :Forward request;
-  else (no)
-    :Render page template;
-  endif
-endif
+  stop
 
-stop
-
-@enduml
-```
+  @enduml
+  ```
 </details>
