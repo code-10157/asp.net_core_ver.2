@@ -9,7 +9,7 @@
     <summary>プロジェクト一覧画面</summary>
       案件の管理をする
     <details open>
-      <summary>独自画面</summary>
+      <summary>ＣＲＵＤ画面</summary>
         &emsp;&nbsp;新規追加画面&nbsp;<br>
         &emsp;&nbsp;削除画面<br>
         &emsp;&nbsp;編集画面<br>
@@ -20,7 +20,7 @@
     <summary>タスク一覧画面</summary>
       案件ごとの作業内容を管理をする
     <details open>
-      <summary>独自画面</summary>
+      <summary>ＣＲＵＤ画面</summary>
         &emsp;&nbsp;新規追加画面&nbsp;<br>
         &emsp;&nbsp;削除画面<br>
         &emsp;&nbsp;編集画面<br>
@@ -32,12 +32,45 @@
 ---
 ### 業務フロー
 
+
 <details>
   <summary>画面遷移図</summary>
+  ※ヘッダー表示：Home,Projects,Things
 
   ``` plantuml
   @startuml
-  state s4 #aliceblue;line:skyblue;line.bold;text:blue : s4 description
+  skinparam backgroundColor white
+  skinparam state {
+    StartColor skyblue
+    EndColor black
+  }
+  state Home #aliceblue;line:skyblue;line.bold;text:blue
+  Home:ホーム画面
+  state Projects #aliceblue;line:skyblue;line.bold;text:blue :プロジェクト一覧画面
+  state Things #aliceblue;line:skyblue;line.bold;text:blue :タスク一覧画面
+  state About #aliceblue;line:skyblue;line.bold;text:blue :その他画面
+  About : Home>About
+
+  [*] -[#blue]-> Home
+  Home -[#blue]-> Projects
+  Home -[#blue]-> Things
+  Home -[#blue]-> About
+
+  state CRUD1 #aliceblue;line:skyblue;line.bold;text:blue {
+    state Create1 #aliceblue;line:skyblue;line.bold;text:blue :新規追加画面
+    state Delete1 #aliceblue;line:skyblue;line.bold;text:blue :削除画面
+    state Detail1 #aliceblue;line:skyblue;line.bold;text:blue :詳細画面
+    state Edit1 #aliceblue;line:skyblue;line.bold;text:blue :編集画面
+  }
+  state CRUD2 #aliceblue;line:skyblue;line.bold;text:blue {
+    state Create2 #aliceblue;line:skyblue;line.bold;text:blue :新規追加画面
+    state Delete2 #aliceblue;line:skyblue;line.bold;text:blue :削除画面
+    state Detail2 #aliceblue;line:skyblue;line.bold;text:blue :詳細画面
+    state Edit2 #aliceblue;line:skyblue;line.bold;text:blue :編集画面
+  }
+  Projects -[#blue]-> CRUD1
+  Things -[#blue]-> CRUD2
+
   @enduml
   ```
 </details>
@@ -51,27 +84,227 @@
   actor "使用者" as ac1
 
   rectangle TaskList_API {
-    ac1 --> (登録する)
-    ac1 --> (削除する)
+    ac1 --> (管理する)
     ac1 --> (一覧を表示する)
     ac1 --> (検索する)
-    ac1 --> (編集する)
     ac1 --> (表示を並べ替える)
 
-    (一覧を表示する) .. (登録する)
-    (一覧を表示する) .. (削除する)
+    (一覧を表示する) .. (管理する)
     (一覧を表示する) .. (表示を並べ替える)
     (一覧を表示する) .. (検索する)
-    (一覧を表示する) .. (編集する)
     (表示を並べ替える) <|-- (昇順で並べ替える)
     (表示を並べ替える) <|-- (降順で並べ替える)
+    (管理する) <|-- (プロジェクトを管理する)
+    (管理する) <|-- (タスクを管理する)   
+    note top of 管理する : CRUD  
   }
+
   @enduml
   ```
 </details>
 
+<details><summary>アクティビティ図</summary>
+<details open><summary>- ホーム画面</summary>
+
+  ``` plantuml
+  @startuml
+
+  start
+  :ホーム画面表示;
+  split
+     :'Project'押下<
+     :プロジェクト一覧画面表示;
+  end
+  split again
+     :'Task'押下<
+     :タスク一覧画面表示;
+  end
+  split again
+     :'Option'押下<
+     :その他画面表示;
+  end
+
+  @enduml
+  ```
+</details>
+<details open><summary>- プロジェクト一覧画面</summary>
+
+  ``` plantuml
+  @startuml
+
+  start
+  partition 初期処理 {
+      :DB確認;
+      if (レコードが存在するか?) then (あり)
+      :画面に全件データを表示;
+      :ステータス確認;
+        if ("完了"?) then (はい)
+        :対象行の背景色を灰色にする;
+        else (いいえ)
+        endif
+      else (なし)
+      endif
+  }
+
+  :ボタン選択;
+  split
+     :'新規追加'押下<
+     :Create画面に遷移;
+     :画面表示;
+     :ボタン選択;
+     split
+      :'戻る'押下<
+     split again
+      :'登録'押下<
+
+      if (必須項目記入済み?) then (いいえ)
+        :エラーメッセージ表示;
+        :Create画面に留まる;
+        stop
+      endif  
+        :DB登録;  
+     end split
+      :プロジェクト一覧画面に遷移;
+  end
+  split again
+     :'検索'押下<
+     if (入力あり?) then (はい)
+      :入力ワードで絞り込み;
+     else (いいえ)
+      :絞り込みなし;
+     endif
+      :画面にデータを表示;
+  end
+  split again
+     :'絞り込みなし'押下<
+     :画面に全件データを表示;
+  end
+  split again
+     :'編集'押下<
+     :Edit画面に遷移;
+     if (DBに存在するデータを選択?) then (いいえ)
+     :エラー画面表示;
+     stop
+     endif
+     :画面表示;
+     split
+      :'戻る'押下<
+     split again
+      :'保存'押下<
+      :画面に入力された内容でDBを更新;
+     end split
+      :プロジェクト一覧画面に遷移;
+  end
+  split again
+     :'詳細'押下<
+     :Detail画面に遷移;
+     if (DBに存在するデータを選択?) then (いいえ)
+      :エラー画面表示;
+     stop
+     endif
+       :画面表示;
+       :選択したデータの内容を表示;
+       :データのステータス確認;
+     if (完了?) then (はい)
+      :プロジェクトに属するタスク一覧DBの
+      データを全件表示;
+     endif
+     split
+      :'編集へ'押下<
+      :編集画面に遷移;
+     split again
+      :'一覧へ'押下<
+      :プロジェクト一覧画面に遷移;
+     end split
+
+  end
+  split again
+     :'削除'押下<
+     :Delete画面に遷移;
+     if (DBに存在するデータを選択?) then (いいえ)
+     :エラー画面表示;
+     stop
+     endif
+     :画面表示;
+     split
+      :'削除'押下<
+      :選択しているレコードをDBから削除;
+     split again
+      :'戻る'押下<
+     end split
+      :プロジェクト一覧画面に遷移;
+  end
+
+  @enduml
+  ```
+</details>
+<details open><summary>- タスク一覧画面</summary>
+
+  ``` plantuml
+  @startuml
+
+  start
+
+  while (data available?)
+    :read data;
+    :generate diagrams;
+  endwhile
+
+  stop
+
+  @enduml
+  ```
+</details>
+<details open><summary>- その他画面</summary>
+
+  ``` plantuml
+  @startuml
+
+  start
+
+  while (data available?)
+    :read data;
+    :generate diagrams;
+  endwhile
+
+  stop
+
+  @enduml
+  ```
+</details>
+
+
+</details>
+
+
+
 <details>
-  <summary>アクテビティ図</summary>
+  <summary>アクテビティ図コピー</summary>
+  <details><summary>ホーム画面</summary>
+
+    ``` plantuml
+    @startuml
+
+    start
+    :Hello world;
+    split
+       :'Project'押下<
+       :プロジェクト一覧画面表示;
+    end
+    split again
+       :'Task'押下<
+       :タスク一覧画面表示;
+    end
+    split again
+       :'Option'押下<
+       :その他画面表示;
+    end
+
+    @enduml
+    ```
+
+  </details>
+
 
   ``` plantuml
   @startuml
@@ -112,3 +345,17 @@
   @enduml
   ```
 </details>
+
+
+---
+### データ構造
+
+``` plantuml
+@startsalt
+{#
+. | Column 2 | Column 3
+Row header 1 | value 1 | value 2
+Row header 2 | A long cell | *
+}
+@endsalt
+```
