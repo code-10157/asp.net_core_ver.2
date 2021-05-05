@@ -113,15 +113,15 @@
   :ホーム画面表示;
   split
      :'Project'押下<
-     :プロジェクト一覧画面表示;
+     :プロジェクト一覧画面に遷移;
   end
   split again
      :'Task'押下<
-     :タスク一覧画面表示;
+     :タスク一覧画面に遷移;
   end
   split again
      :'Option'押下<
-     :その他画面表示;
+     :その他画面に遷移;
   end
 
   @enduml
@@ -133,6 +133,7 @@
   @startuml
 
   start
+  :プロジェクト一覧画面に遷移;
   partition 初期処理 {
       :DB確認;
       if (レコードが存在するか?) then (あり)
@@ -145,7 +146,7 @@
       else (なし)
       endif
   }
-
+  :プロジェクト一覧画面表示;
   :ボタン選択;
   split
      :'新規追加'押下<
@@ -244,13 +245,103 @@
   @startuml
 
   start
+  :タスク一覧画面に遷移;
+  partition 初期処理 {
+      :DB確認;
+      if (レコードが存在するか?) then (あり)
+      :画面に全件データを表示;
+      :ステータス確認;
+        if ("完了"?) then (はい)
+        :対象行の背景色を灰色にする;
+        else (いいえ)
+        endif
+      else (なし)
+      endif
+  }
+  :タスク一覧画面表示;
+  :ボタン選択;
+  split
+     :'新規追加'押下<
+     :Create画面に遷移;
+     :画面表示;
+     :ボタン選択;
+     split
+      :'戻る'押下<
+     split again
+      :'登録'押下<
 
-  while (data available?)
-    :read data;
-    :generate diagrams;
-  endwhile
+      if (必須項目記入済み?) then (いいえ)
+        :エラーメッセージ表示;
+        :Create画面に留まる;
+        stop
+      endif  
+        :DB登録;  
+     end split
+      :プロジェクト一覧画面に遷移;
+  end
+  split again
+     :'検索'押下<
+     if (入力あり?) then (はい)
+      :入力ワードで絞り込み;
+     else (いいえ)
+      :絞り込みなし;
+     endif
+      :画面にデータを表示;
+  end
+  split again
+     :'絞り込みなし'押下<
+     :画面に全件データを表示;
+  end
+  split again
+     :'編集'押下<
+     :Edit画面に遷移;
+     if (DBに存在するデータを選択?) then (いいえ)
+     :エラー画面表示;
+     stop
+     endif
+     :画面表示;
+     split
+      :'戻る'押下<
+     split again
+      :'保存'押下<
+      :画面に入力された内容でDBを更新;
+     end split
+      :プロジェクト一覧画面に遷移;
+  end
+  split again
+     :'詳細'押下<
+     :Detail画面に遷移;
+     if (DBに存在するデータを選択?) then (いいえ)
+      :エラー画面表示;
+     stop
+     endif
+       :画面表示;
+       :選択したデータの内容を表示;
+     split
+      :'編集へ'押下<
+      :編集画面に遷移;
+     split again
+      :'一覧へ'押下<
+      :プロジェクト一覧画面に遷移;
+     end split
 
-  stop
+  end
+  split again
+     :'削除'押下<
+     :Delete画面に遷移;
+     if (DBに存在するデータを選択?) then (いいえ)
+     :エラー画面表示;
+     stop
+     endif
+     :画面表示;
+     split
+      :'削除'押下<
+      :選択しているレコードをDBから削除;
+     split again
+      :'戻る'押下<
+     end split
+      :プロジェクト一覧画面に遷移;
+  end
 
   @enduml
   ```
@@ -261,94 +352,59 @@
   @startuml
 
   start
-
-  while (data available?)
-    :read data;
-    :generate diagrams;
-  endwhile
-
-  stop
-
-  @enduml
-  ```
-</details>
-
-
-</details>
-
-
-
-<details>
-  <summary>アクテビティ図コピー</summary>
-  <details><summary>ホーム画面</summary>
-
-    ``` plantuml
-    @startuml
-
-    start
-    :Hello world;
-    split
-       :'Project'押下<
-       :プロジェクト一覧画面表示;
-    end
-    split again
-       :'Task'押下<
-       :タスク一覧画面表示;
-    end
-    split again
-       :'Option'押下<
-       :その他画面表示;
-    end
-
-    @enduml
-    ```
-
-  </details>
-
-
-  ``` plantuml
-  @startuml
-
-  start
-  :ClickServlet.handleRequest();
-  :new page;
-  if (Page.onSecurityCheck) then (true)
-    :Page.onInit();
-    if (isForward?) then (no)
-      :Process controls;
-      if (continue processing?) then (no)
-        stop
-      endif
-
-      if (isPost?) then (yes)
-        :Page.onPost();
-      else (no)
-        :Page.onGet();
-      endif
-      :Page.onRender();
-    endif
-  else (false)
-  endif
-
-  if (do redirect?) then (yes)
-    :redirect process;
-  else
-    if (do forward?) then (yes)
-      :Forward request;
-    else (no)
-      :Render page template;
-    endif
-  endif
-
-  stop
+  :その他画面遷移;
+  :DB:projectsを確認;
+  if (データあり?) then (いいえ)
+    :その他画面表示;
+    stop
+  endif  
+  :項目名:開始日でデータをグループ化;
+  :開始日と件数を画面に表示;
+  :その他画面表示;
+  end
 
   @enduml
   ```
 </details>
 
+</details>
 
 ---
 ### データ構造
+
+- テーブル
+  - Project：プロジェクトデータを管理する
+  - Thing：タスクデータを管理する
+<br>
+- データ
+  - Project
+    |項目名|画面表示名|データ型|桁数|null|PrimaryKey|備考|
+    |:--:|:--:|:--:|:--:|:--:|:--:|:--:|
+    |ID|-|int|-|NOTNULL|○|画面表示されない|
+    |Category|分類|int|-|NOTNULL||enum|
+    |ProjectName|プロジェクト名|nvarchar|50|NOTNULL|||
+    |StartDate|開始日|datetime2|7|NOTNULL|||
+    |CompletionDate|完了日|datetime2|7|NOTNULL|||
+    |Status|状態|int|-|-|||
+    |Priority|優先度|int|-|NOTNULL||enum|
+    |Comment|備考|nvarchar|MAX|-|-||
+
+  - Thing
+    |項目名|画面表示名|データ型|桁数|null|PrimaryKey|備考|
+    |:--:|:--:|:--:|:--:|:--:|:--:|:--:|
+    |ID|-|int|-|NOTNULL|○|画面表示されない|
+    |ProjectID|プロジェクト名|int|-|NOTNULL|-||
+    |Process|工程|nvarchar|MAX|NOTNULL|-||
+    |TaskName|作業名|nvarchar|MAX|NOTNULL|-||
+    |Start|着手日|datetime2|7|NOTNULL|-||
+    |End|完了日|datetime2|7|NOTNULL|-||
+    |Status|状態|int|-|-|-||
+    |Progress|進捗|int|MAX|NOTNULL|-||
+    |Memo|メモ|nvarchar|MAX|NOTNULL|○||
+
+
+
+
 
 ``` plantuml
 @startsalt
