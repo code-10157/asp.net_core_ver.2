@@ -378,6 +378,7 @@
 <br>
 - データ
   - Project
+
     |項目名|画面表示名|データ型|桁数|null|PrimaryKey|備考|
     |:--:|:--:|:--:|:--:|:--:|:--:|:--:|
     |ID|-|int|-|NOTNULL|○|画面表示されない|
@@ -393,25 +394,11 @@
     |項目名|画面表示名|データ型|桁数|null|PrimaryKey|備考|
     |:--:|:--:|:--:|:--:|:--:|:--:|:--:|
     |ID|-|int|-|NOTNULL|○|画面表示されない|
-    |ProjectID|プロジェクト名|int|-|NOTNULL|-||
+    |ProjectID|プロジェクト名|int|-|NOTNULL|-|外部キー:Project.ID|
     |Process|工程|nvarchar|MAX|NOTNULL|-||
     |TaskName|作業名|nvarchar|MAX|NOTNULL|-||
     |Start|着手日|datetime2|7|NOTNULL|-||
     |End|完了日|datetime2|7|NOTNULL|-||
-    |Status|状態|int|-|-|-||
+    |Status|状態|int|-|-|-|enum|
     |Progress|進捗|int|MAX|NOTNULL|-||
-    |Memo|メモ|nvarchar|MAX|NOTNULL|○||
-
-
-
-
-
-``` plantuml
-@startsalt
-{#
-. | Column 2 | Column 3
-Row header 1 | value 1 | value 2
-Row header 2 | A long cell | *
-}
-@endsalt
-```
+    |Memo|メモ|nvarchar|MAX|NOTNULL|-||
