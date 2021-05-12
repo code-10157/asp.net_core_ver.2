@@ -55,9 +55,10 @@
 １日２時間×３６５日<br>
 →総時間：８３０時間
 
-- 第１段階（期間：７ヵ月）
+- 第１段階（期間：８ヵ月）
   - 要件定義：2ヵ月
   - 基本設計：2ヵ月
+  - 詳細設計：1ヵ月
   - プログラミング：2ヵ月
   - テスト：1ヵ月
 
@@ -66,7 +67,8 @@
 - 第２段階（期間：５ヵ月）
   - 要件定義：1ヵ月
   - 基本設計：1ヵ月
-  - プログラミング：2ヵ月
+  - 詳細設計：1ヵ月
+  - プログラミング：1ヵ月
   - テスト：1ヵ月
 
 <details>
@@ -99,6 +101,18 @@
   [設計書作成] lasts 30 days
   then [試験書作成] lasts 15 days
   then [レビュ―] lasts 15 days
+  @endgantt
+  ```
+
+  詳細設計
+
+  ``` plantuml
+  @startgantt
+  -- 第１段階 --
+  [詳細設計] lasts 30 days
+  -- タスク --
+  [設計書作成] lasts 25 days
+  then [レビュ―] lasts 5 days
   @endgantt
   ```
 
@@ -155,17 +169,29 @@
   @endgantt
   ```
 
+  詳細設計
+
+  ``` plantuml
+  @startgantt
+  -- 第１段階 --
+  [詳細設計] lasts 30 days
+  -- タスク --
+  [設計書作成] lasts 25 days
+  then [レビュ―] lasts 5 days
+  @endgantt
+  ```
+
   プログラミング
   ``` plantuml
   @startgantt
   -- 第１段階 --
   -- 第２段階 --
-  [プログラミング] lasts 60 days
+  [プログラミング] lasts 30 days
   -- タスク --
-  [新規機能の実装１] lasts 15 days
-  then [新規機能の実装２] lasts 15 days
-  then [新規機能の実装３] lasts 15 days
-  then [レビュ―] lasts 15 days
+  [新規機能の実装１] lasts 10 days
+  then [新規機能の実装２] lasts 10 days
+  then [新規機能の実装３] lasts 5 days
+  then [レビュ―] lasts 5 days
   @endgantt
   ```
 
@@ -190,5 +216,19 @@
   [リリース] lasts 5 days
   @endgantt
   ```
-
 </details>
+
+#### 指標
+--
+
+#### 範囲
+
+- 第１段階：ユーザ機能を追加
+- 第２段階：通知機能を追加
+
+
+---
+
+### ３．機能要件
+
+#### 機能
