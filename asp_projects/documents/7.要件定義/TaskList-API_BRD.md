@@ -72,7 +72,7 @@
 <details>
   <summary>ガントチャート</summary>
 
-  __-第１段階-__
+  __-第１段階-__ <br>
   要件定義
 
   ``` plantuml
@@ -128,7 +128,7 @@
   @endgantt
   ```
 
-  __-第２段階-__
+  __-第２段階-__ <br>
   要件定義
   ``` plantuml
   @startgantt
