@@ -84,7 +84,7 @@
   then [現行システムの調査] lasts 10 days
   then [対応方針の検討] lasts 15 days
   then [仕様書作成] lasts 15 days
-  then [仕様書レビュ―及び内容修正] lasts 10 days
+  then [レビュ―] lasts 10 days
   then [予備] lasts 5 days
   @endgantt
   ```
@@ -98,7 +98,7 @@
   -- タスク --
   [設計書作成] lasts 30 days
   then [試験書作成] lasts 15 days
-  then [設計書レビュ―及び内容修正] lasts 15 days
+  then [レビュ―] lasts 15 days
   @endgantt
   ```
 
@@ -112,7 +112,7 @@
   [新規機能の実装１] lasts 15 days
   then [新規機能の実装２] lasts 15 days
   then [新規機能の実装３] lasts 15 days
-  then [実装箇所のレビュ―及び内容修正] lasts 15 days
+  then [レビュ―] lasts 15 days
   @endgantt
   ```
 
@@ -138,7 +138,7 @@
   -- タスク --
   [対応方針の検討] lasts 12 days
   then [仕様書の修正] lasts 12 days
-  then [仕様書レビュ―及び内容修正] lasts 6 days
+  then [レビュ―] lasts 6 days
   @endgantt
   ```
 
@@ -151,7 +151,7 @@
   -- タスク --
   [設計書作成] lasts 20 days
   then [試験書作成] lasts 5 days
-  then [設計書レビュ―及び内容修正] lasts 5 days
+  then [レビュ―] lasts 5 days
   @endgantt
   ```
 
@@ -165,7 +165,7 @@
   [新規機能の実装１] lasts 15 days
   then [新規機能の実装２] lasts 15 days
   then [新規機能の実装３] lasts 15 days
-  then [実装箇所のレビュ―及び内容修正] lasts 15 days
+  then [レビュ―] lasts 15 days
   @endgantt
   ```
 
